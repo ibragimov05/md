@@ -1,5 +1,6 @@
 ## 0.0.8
 
+- **CHANGED**: New table render
 - **FIXED**: Invalidate and relayout render object after system fonts changed.
 
 ## 0.0.7
