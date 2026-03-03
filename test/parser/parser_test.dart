@@ -411,6 +411,17 @@ void main() => group('Parse', () {
         }
       });
 
+      test('Parse LaTeX inline math replaces rightarrow with arrow', () {
+        final markdown = markdownDecoder.convert(r'A $\rightarrow$ B');
+        expect(markdown.blocks, hasLength(1));
+        final paragraph = markdown.blocks.first as MD$Paragraph;
+        expect(paragraph.text, contains('→'));
+        expect(
+          paragraph.spans.map((s) => s.text).join(),
+          contains('→'),
+        );
+      });
+
       group('Parse escaped characters', () {
         const escapedCharacterTests = {
           r'\\': r'\', // Backslash

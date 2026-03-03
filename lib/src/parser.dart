@@ -35,8 +35,18 @@ class MarkdownDecoder extends Converter<String, Markdown> {
   static final RegExp _listPattern = RegExp(
       r'^(?<indent>[ \t]{0,8})(?<marker>(\d{1,9})[\.)]|[*+-])(?<text>[ \t]+(.*))?$');
 
+  /// Replaces common LaTeX inline math with Unicode equivalents.
+  static String _replaceInlineMath(String text) => text
+      .replaceAll(r'$\rightarrow$', '\u{2192}')
+      .replaceAll(r'$\leftarrow$', '\u{2190}')
+      .replaceAll(r'$\Rightarrow$', '\u{21D2}')
+      .replaceAll(r'$\Leftarrow$', '\u{21D0}')
+      .replaceAll(r'$\Leftrightarrow$', '\u{21D4}');
+
   @override
   Markdown convert(String input) {
+    input = _replaceInlineMath(input);
+
     final lines = LineSplitter.split(input).toList(growable: false);
     if (lines.isEmpty) return const Markdown.empty();
     final blocks = Queue<MD$Block>(); // Queue to accumulate blocks
